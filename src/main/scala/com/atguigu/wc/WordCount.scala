@@ -18,7 +18,7 @@ object WordCount {
     // 创建一个批处理的执行环境
     val env: ExecutionEnvironment = ExecutionEnvironment.getExecutionEnvironment
     // 从文件中读取数据
-    val inputDataSet: DataSet[String] = env.readTextFile("E:\\FlinkTutorial\\src\\main\\resources\\word.txt")
+    val inputDataSet: DataSet[String] = env.readTextFile("/Users/jackson/Downloads/FlinkTutorial/src/main/resources/word.txt")
     // 基于 DataSet做转换，首先按空格分词打散，然后按照word作为key做group by
     val resultDataSet: DataSet[(String, Int)] = inputDataSet
       .flatMap(_.split(" "))    // 分词得到所有word构成的数据集
