@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8f08e32c-e676-4464-8458-1ab1d2b23ad7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/SourceTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/SourceTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/TransformTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/TransformTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/WindowTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/WindowTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/EsSinkTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/EsSinkTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/JdbcSinkTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/JdbcSinkTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/KafkaSinkTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/KafkaSinkTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/RedisSinkTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/atguigu/apitest/sinktest/RedisSinkTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day4/ProcessFunctionTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day4/ProcessFunctionTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day4/WindowTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day4/WindowTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day5/SideOutputTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day5/SideOutputTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day5/StateTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day5/StateTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day6/StateTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day6/StateTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day7/KafkaTableTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day7/KafkaTableTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day7/OutputTableTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day7/OutputTableTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day7/TableApiTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day7/TableApiTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day7/TableExample.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day7/TableExample.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/day7/TimeAndWindowTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/day7/TimeAndWindowTest.scala" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="FlinkTutorial" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="E:\FlinkTutorial\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="alwaysUpdateSnapshots" value="true" />
+        <option name="localRepository" value="D:\apache-maven-3.5.3\repo" />
+        <option name="userSettingsFile" value="D:\apache-maven-3.5.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1ae6lawUrC59Vx59GL5OOQG2dfO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="0d570cb2-96df-43cc-80da-7f777e6d0afe" />
+  </component>
+  <component name="RunManager" selected="Application.SourceTest">
+    <configuration name="KafkaTableTest" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="day7.KafkaTableTest" />
+      <module name="FlinkTutorial" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="day7.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SourceTest" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.atguigu.apitest.SourceTest" />
+      <module name="FlinkTutorial" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.atguigu.apitest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TableApiTest" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="day7.TableApiTest" />
+      <module name="FlinkTutorial" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="day7.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TableExample" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="day7.TableExample" />
+      <module name="FlinkTutorial" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="day7.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SourceTest" />
+        <item itemvalue="Application.KafkaTableTest" />
+        <item itemvalue="Application.TableApiTest" />
+        <item itemvalue="Application.TableExample" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value=",SCALA_SHOW_INHERITED" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f08e32c-e676-4464-8458-1ab1d2b23ad7" name="Default Changelist" comment="" />
+      <created>1587083864391</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587083864391</updated>
+      <workItem from="1587083870680" duration="121000" />
+      <workItem from="1587098019628" duration="14502000" />
+      <workItem from="1587169233188" duration="26916000" />
+      <workItem from="1587259818267" duration="10253000" />
+      <workItem from="1587342935351" duration="4602000" />
+      <workItem from="1587377403441" duration="772000" />
+      <workItem from="1587380400410" duration="6146000" />
+      <workItem from="1587387886332" duration="7171000" />
+      <workItem from="1587429237646" duration="19537000" />
+      <workItem from="1587518544860" duration="614000" />
+      <workItem from="1587701305533" duration="20919000" />
+      <workItem from="1587774712482" duration="4384000" />
+      <workItem from="1587884953186" duration="6729000" />
+      <workItem from="1587911300027" duration="2854000" />
+      <workItem from="1587959235133" duration="1291000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="690" y="242" key="FileChooserDialogImpl" timestamp="1587380408175">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="690" y="242" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1587380408175" />
+    <state width="1867" height="371" key="GridCell.Tab.0.bottom" timestamp="1587917506028">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1867" height="371" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1587917506028" />
+    <state width="1867" height="371" key="GridCell.Tab.0.center" timestamp="1587917506028">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1867" height="371" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1587917506028" />
+    <state width="1867" height="371" key="GridCell.Tab.0.left" timestamp="1587917506028">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1867" height="371" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1587917506028" />
+    <state width="1867" height="371" key="GridCell.Tab.0.right" timestamp="1587917506028">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1867" height="371" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1587917506028" />
+    <state x="904" y="482" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587794699069">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="904" y="482" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1587794699069" />
+    <state x="420" y="310" width="1301" height="927" key="dock-window-1" timestamp="1587429276787">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="420" y="310" width="1301" height="927" key="dock-window-1/0.0.1920.1080@0.0.1920.1080" timestamp="1587429276787" />
+    <state x="587" y="239" width="901" height="670" key="find.popup" timestamp="1587742363573">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="587" y="239" width="901" height="670" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1587742363573" />
+    <state x="148" y="144" key="new project wizard" timestamp="1587885025804">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="148" y="144" key="new project wizard/0.0.1920.1080@0.0.1920.1080" timestamp="1587885025804" />
+    <state x="532" y="246" key="run.anything.popup" timestamp="1587383676628">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="532" y="246" key="run.anything.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1587383676628" />
+    <state x="300" y="77" width="840" height="1034" key="search.everywhere.popup" timestamp="1587383799244">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="300" y="77" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1587383799244" />
+  </component>
+</project>
