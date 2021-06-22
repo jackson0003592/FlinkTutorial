@@ -36,8 +36,8 @@ object WindowTest {
         val dataArray = data.split(",")
         SensorReading( dataArray(0), dataArray(1).toLong, dataArray(2).toDouble )
       } )
-//      .assignAscendingTimestamps(_.timestamp * 1000L)
-//      .assignTimestampsAndWatermarks( new MyWMAssigner(1000L) )
+//      .assignAscendingTimestamps(_.timestamp * 1000L)  有序的数据，指定升序字段作为窗口触发即可
+//      .assignTimestampsAndWatermarks( new MyWMAssigner(1000L) )  maxOutOfOrderness  最大乱序程度
       .assignTimestampsAndWatermarks( new BoundedOutOfOrdernessTimestampExtractor[SensorReading](Time.seconds(1)) {
       override def extractTimestamp(element: SensorReading): Long = element.timestamp * 1000L
     } ).setParallelism(2)
