@@ -29,15 +29,15 @@ object SourceTest {
     env.setParallelism(1)
 
     // 1. 从集合中读取数据
-    val stream1: DataStream[SensorReading] = env.fromCollection( List(
-      SensorReading("sensor_1", 1547718199, 35.8),
-      SensorReading("sensor_6", 1547718201, 15.4),
-      SensorReading("sensor_7", 1547718202, 6.7),
-      SensorReading("sensor_10", 1547718205, 38.1),
-      SensorReading("sensor_1", 1547718207, 37.2),
-      SensorReading("sensor_1", 1547718212, 33.5),
-      SensorReading("sensor_1", 1547718215, 38.1)
-    ) )
+//    val stream1: DataStream[SensorReading] = env.fromCollection( List(
+//      SensorReading("sensor_1", 1547718199, 35.8),
+//      SensorReading("sensor_6", 1547718201, 15.4),
+//      SensorReading("sensor_7", 1547718202, 6.7),
+//      SensorReading("sensor_10", 1547718205, 38.1),
+//      SensorReading("sensor_1", 1547718207, 37.2),
+//      SensorReading("sensor_1", 1547718212, 33.5),
+//      SensorReading("sensor_1", 1547718215, 38.1)
+//    ) )
 
 //    env.fromElements(0, 1.1, "sdfe")
 
@@ -49,15 +49,15 @@ object SourceTest {
 
     // 4. 从 kafka读取数据
     val properties = new Properties()
-    properties.setProperty("bootstrap.servers", "hadoop104:9092")
-    //properties.setProperty("group.id", "ab")
+    properties.setProperty("bootstrap.servers", "10.200.70.92:9092")
+    properties.setProperty("group.id", "ab")
     properties.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
     properties.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
-    properties.setProperty("auto.offset.reset", "latest")
-    val stream4 = env.addSource( new FlinkKafkaConsumer011[String]("b", new SimpleStringSchema(), properties) )
+    properties.setProperty("auto.offset.reset", "earliest")
+    val stream4 = env.addSource( new FlinkKafkaConsumer011[String]("dev_tracelog", new SimpleStringSchema(), properties) )
 
     // 5. 自定义source
-    val stream5 = env.addSource( new MySensorSource() )
+//    val stream5 = env.addSource( new MySensorSource() )
 
     // 打印输出
    // stream5.print("stream5")

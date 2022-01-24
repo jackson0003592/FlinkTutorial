@@ -1,0 +1,180 @@
+1. Watermark就是事件时间，代表当前时间的进展
+
+2. Watermark主要用来处理乱序数据，一般就是直接定义一个延迟时间，延迟触发窗口操作
+这里的延迟，指的是当前收到的数据内的时间戳
+
+3. Watermark延迟时间的设置，一般要根据数据的乱序情况来定，通常设置成最大乱序程度
+如果按照最大乱序程度定，那么就能保证所有窗口的数据都是正确的
+要权衡正确性和实时性的话，可以不按最大乱序程度，而是给一个相对较小的watermark延迟
+watermark延迟时间，完全是程序自己定义的，可以拍脑袋给一个数
+最好的处理方式，是先了解数据的分布情况（抽样、或者根据经验、机器学习算法），可以指定一个合理的延迟，比较小，还能处理绝大多数乱序的情况
+
+4. 关窗操作，必须是时间进展到窗口关闭时间，事件时间语义下就是watermark达到窗口关闭时间
+当前Ts最大时间戳-延迟时间 = watermark，如果现在的watermark大于等于窗口结束时间，就关闭窗口
+
+5. watermark代表的含义是，之后就不会再来时间戳比wate  rmark里面的数值小的数据了
+如果有不同的上游分区，当前任务会对它们创建各自的分区watermark，当前任务的事件时间就是最小的那个
+
+6. 处理乱序数据，Flink有三重保证
+watermark可以设置延迟时间
+window的allowedLateness方法，可以设置窗口允许处理迟到数据的时间
+window的sideOutputLateData方法，可以将迟到的数据写入侧输出流
+
+窗口有两个重要操作：触发计算，清空状态（关闭窗口）
+
+
+watermark是一条特殊的数据记录
+watermark必须是单调递增，以确保任务的事件时间时钟在向前推进，而不是在后退
+watermark与数据的时间戳相关
+
+
+
+
+
+
+-------Example---------------------------------------------------------------------------------------------
+WM:
+1636334429750
+1636334433750
+1636334434750
+1636334493750
+
+
+CT
+1636334429750
+1636334430750
+1636334434750
+1636334435750
+1636334494750
+
+
+1636334419750   1636334419750
+1636334424755   1636334424750
+1636334429750   1636334434750   5000
+
+t1 1636334429750 23
+t3 1636334430750 25
+t5 1636334434750 25
+t4 1636334435750 25
+t5 1636334494750 25
+
+
+
+
+
+1636443840156       5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+1636443840164       5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+1636443840259       5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+1636443840711       5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443840565.80555779
+1636443840711       5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443840565.80555779
+1636443840616       5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+1636443841071       4.ac0a267c-044e-4a28-b489-6be16e0ab788..1636443840963.45670843
+1636443841229       4...1636443840795.72727005
+1636443841298       5...1636443840802.64549655
+1636443841398       5...1636443840802.64549655
+1636443851398       5...1636443840802.64549655
+
+1636443841156
+{"time_iso8601":"2021-11-09T15:44:00+08:00","remote_addr":"172.31.0.50","trace":{"traceid":"5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094","libversion":"9.20211027173000","userid":"00f5760d-f921-424f-adaa-6a94b812baab","orgid":"ac0a267c-044e-4a28-b489-6be16e0ab788","content":{"result":{"retdata":"NA","retinfo":"NA","retcode":-1},"para":{"rest":{"method":"GET","header":"NA","body":"NA","url":"/tmp/orgparsetting/code?code=DownloadQRCode&orgId=ac0a267c-044e-4a28-b489-6be16e0ab788","query_string":"NA"},"other":"Class=com.yxt.miscapi.client.clients.MiscApiClient\nMethod=getOrgParSettiongByCode\nArgs=DownloadQRCode;ac0a267c-044e-4a28-b489-6be16e0ab788"}},"spanid":"af12554682ee2254","trace_type":"request","parentspanid":"ef4185ec5d5db66a","route":-1,"pipe":-1,"response_time":-1,"connect":{"protocol":"http","srcip":"10.120.20.45","dstport":10000,"srcport":10000,"dstip":"10.120.18.97","srchostname":"coreapi-dev-6d648655f-4z7qb","dsthostname":"NA"},"who":{"from1":{"agent":"NA","page":"NA"},"from2":{"svcid":"coreapi","filename":"OrgParSettingController.java","line":77},"to":{"svcid":"miscapi"}},"timestamp":1636443840136},"pkid":"0bf8102a-4ff8-4664-89b4-55f96e5c5840","request_time":"0.000","request_length":"1908","s_timestamp":"1636443840156851","ds":"20211109","status":"200"}
+1636443842164
+{"time_iso8601":"2021-11-09T15:44:00+08:00","remote_addr":"172.31.0.50","trace":{"traceid":"5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094","libversion":"9.20211027173000","userid":"00f5760d-f921-424f-adaa-6a94b812baab","orgid":"ac0a267c-044e-4a28-b489-6be16e0ab788","content":{"result":{"retdata":"NA","retinfo":"NA","retcode":200},"para":{"rest":{"method":"GET","header":"NA","body":"NA","url":"/tmp/orgparsetting/code?code=DownloadQRCode&orgId=ac0a267c-044e-4a28-b489-6be16e0ab788","query_string":"NA"},"other":"Class=com.yxt.miscapi.client.clients.MiscApiClient\nMethod=getOrgParSettiongByCode\nArgs=DownloadQRCode;ac0a267c-044e-4a28-b489-6be16e0ab788"}},"spanid":"af12554682ee2254","trace_type":"response","parentspanid":"ef4185ec5d5db66a","route":-1,"pipe":-1,"response_time":11305704,"connect":{"protocol":"http","srcip":"10.120.20.45","dstport":10000,"srcport":10000,"dstip":"10.120.18.97","srchostname":"coreapi-dev-6d648655f-4z7qb","dsthostname":"NA"},"who":{"from1":{"agent":"NA","page":"NA"},"from2":{"svcid":"coreapi","filename":"OrgParSettingController.java","line":77},"to":{"svcid":"miscapi"}},"timestamp":1636443840147},"pkid":"837b6340-4db8-49ed-87aa-cccf27f25eae","request_time":"0.000","request_length":"1916","s_timestamp":"1636443840164322","ds":"20211109","status":"200"}
+1636443843259
+{"time_iso8601":"2021-11-09T15:44:00+08:00","remote_addr":"172.31.0.50","trace":{"traceid":"5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094","libversion":"5.20211105130000","time_details":{"request_body_end":-1,"call_end":-1,"dns_end":-1,"connect_end":-1,"connection_acquired":-1,"response_headers_start":-1,"request_body_start":-1,"secure_connect_start":-1,"response_body_start":-1,"request_headers_start":-1,"request_headers_end":-1,"response_headers_end":-1,"response_body_end":-1,"call_start":-1,"secure_connect_end":-1,"connection_released":-1,"dns_start":-1,"connect_start":-1},"userid":"00f5760d-f921-424f-adaa-6a94b812baab","content":{"result":{"retdatalength":-1,"retdata":"NA","retinfo":"NA","retcode":0},"para":{"rest":{"method":"GET","bodylength":0,"header":"Accept=application/json, text/plain, */*&source=501","body":"","query_string":"code=DownloadQRCode&orgId=ac0a267c-044e-4a28-b489-6be16e0ab788&time=1636443839396","url":"https://api-core-phx.yunxuetang.com.cn/v2/orgparsetting/code"},"other":"NA"}},"orgid":"ac0a267c-044e-4a28-b489-6be16e0ab788","spanid":"ef4185ec5d5db66a","parentspanid":"NA","trace_type":"request","route":-1,"pipe":-1,"response_time":-1,"connect":{"srcip":"NA","protocol":"http:","dstport":-1,"srcport":-1,"dstip":"NA"},"who":{"from1":{"agent":"NA","page":{"appModule":"other","module":"win","browser":"chrome","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/95.0.4638.69 safari/537.36","element":"NA"},"pageid":"/#/studynote"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}},"timestamp":1636443839402,"policy":{"keywords":"NA","level":-1}},"pkid":"07faf01e-ade4-4f0e-9e58-ea0ad815d8aa","request_time":"0.000","request_length":"2406","s_timestamp":"1636443840259741","ds":"20211109","status":"200"}
+1636443844616
+{"time_iso8601":"2021-11-09T15:44:00+08:00","remote_addr":"172.31.0.50","trace":{"traceid":"5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094","libversion":"5.20211105130000","time_details":{"dns_end":-1,"connect_end":1636443839839,"connection_acquired":1636443839839,"request_body_end":-1,"call_end":-1,"response_headers_start":-1,"request_body_start":-1,"secure_connect_start":-1,"request_headers_start":-1,"response_body_start":-1,"request_headers_end":-1,"response_headers_end":-1,"response_body_end":-1,"call_start":1636443839402,"secure_connect_end":-1,"dns_start":-1,"connection_released":1636443839840,"connect_start":1636443839402},"userid":"00f5760d-f921-424f-adaa-6a94b812baab","content":{"result":{"retdatalength":215,"retdata":"NA","retinfo":"NA","retcode":200},"para":{"rest":{"method":"GET","bodylength":0,"header":"Accept=application/json, text/plain, */*&source=501","body":"","query_string":"code=DownloadQRCode&orgId=ac0a267c-044e-4a28-b489-6be16e0ab788&time=1636443839396","url":"https://api-core-phx.yunxuetang.com.cn/v2/orgparsetting/code"},"other":"NA"}},"orgid":"ac0a267c-044e-4a28-b489-6be16e0ab788","spanid":"ef4185ec5d5db66a","trace_type":"response","parentspanid":"NA","route":-1,"pipe":-1,"response_time":438000000,"connect":{"protocol":"http:","srcip":"NA","dstport":-1,"srcport":-1,"dstip":"NA"},"who":{"from1":{"agent":"NA","page":{"appModule":"other","module":"win","browser":"chrome","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/95.0.4638.69 safari/537.36","element":"NA"},"pageid":"/#/studynote"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}},"policy":{"keywords":"NA","level":-1},"timestamp":1636443839840},"pkid":"50c615a4-218a-44fb-bcca-4e24a4c0d1db","request_time":"0.000","request_length":"2472","s_timestamp":"1636443840616886","ds":"20211109","status":"200"}
+1636443849298
+{"time_iso8601":"2021-11-09T15:44:01+08:00","remote_addr":"172.31.0.50","trace":{"traceid":"5...1636443840802.64549655","libversion":"5.20211027210000","time_details":{"dns_end":-1,"connect_end":1636443840829,"connection_acquired":1636443840829,"request_body_end":-1,"call_end":-1,"response_headers_start":-1,"request_body_start":-1,"secure_connect_start":-1,"request_headers_start":-1,"response_body_start":-1,"request_headers_end":-1,"response_headers_end":-1,"response_body_end":-1,"call_start":1636443840802,"secure_connect_end":-1,"dns_start":-1,"connection_released":1636443840829,"connect_start":1636443840802},"userid":"NA","orgid":"NA","content":{"result":{"retdatalength":49,"retdata":"NA","retinfo":"NA","retcode":200},"para":{"rest":{"method":"GET","bodylength":0,"header":"source=10105&TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6ImQ1OWU3MDJlLTE0YjgtNDJmMC1iYjcyLTY3NzQ4N2QwOTczMCIsInVzZXJJZCI6ImY1MmQ5ZmNhLTY2ZjItNDZhOS1iNWU2LTU4ZWY2YThmYjhlNCIsImNsdXN0ZXJJZCI6InYyZGV2IiwiZXhwIjoxNjM3NjUyMjA3fQ.-tpLEkOYM9qaCU_LWwapoSH2-9GPBIjXwtBwjEmX-CrBflRZN4er3m1abClj3P6MFy7WaphlhOBzdehUKpcp-w","body":"","url":"https://api-tcm-phx.yunxuetang.com.cn/v2/tcmCourse/getUpgradeLock","query_string":"courseId=1457904468778528769"},"other":"NA"}},"spanid":"7b4a7c240c7d68f9","trace_type":"response","parentspanid":"NA","route":-1,"pipe":-1,"response_time":27000000,"connect":{"protocol":"http:","srcip":"NA","dstport":-1,"srcport":-1,"dstip":"NA"},"who":{"from1":{"agent":"NA","page":{"appModule":"other","browser":"chrome","module":"mac","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (macintosh; intel mac os x 10_16_0) applewebkit/537.36 (khtml, like gecko) xx-desktop/1.5.1 chrome/85.0.4183.121 electron/10.2.0 safari/537.36","element":"NA"},"pageid":"/cm.html#/"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}},"timestamp":1636443840829,"policy":{"keywords":"NA","level":-1}},"pkid":"af3d911a-62ad-4f79-bf4d-b04817452eff","request_time":"0.000","request_length":"4182","s_timestamp":"1636443841298415","ds":"20211109","status":"200"}
+1636443851039
+{"time_iso8601":"2021-11-09T15:44:01+08:00","remote_addr":"172.31.0.50","trace":{"traceid":"5...1636443840802.64549655","libversion":"5.20211027210000","time_details":{"dns_end":-1,"connect_end":1636443840829,"connection_acquired":1636443840829,"request_body_end":-1,"call_end":-1,"response_headers_start":-1,"request_body_start":-1,"secure_connect_start":-1,"request_headers_start":-1,"response_body_start":-1,"request_headers_end":-1,"response_headers_end":-1,"response_body_end":-1,"call_start":1636443840802,"secure_connect_end":-1,"dns_start":-1,"connection_released":1636443840829,"connect_start":1636443840802},"userid":"NA","orgid":"NA","content":{"result":{"retdatalength":49,"retdata":"NA","retinfo":"NA","retcode":200},"para":{"rest":{"method":"GET","bodylength":0,"header":"source=10105&TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6ImQ1OWU3MDJlLTE0YjgtNDJmMC1iYjcyLTY3NzQ4N2QwOTczMCIsInVzZXJJZCI6ImY1MmQ5ZmNhLTY2ZjItNDZhOS1iNWU2LTU4ZWY2YThmYjhlNCIsImNsdXN0ZXJJZCI6InYyZGV2IiwiZXhwIjoxNjM3NjUyMjA3fQ.-tpLEkOYM9qaCU_LWwapoSH2-9GPBIjXwtBwjEmX-CrBflRZN4er3m1abClj3P6MFy7WaphlhOBzdehUKpcp-w","body":"","url":"https://api-tcm-phx.yunxuetang.com.cn/v2/tcmCourse/getUpgradeLock","query_string":"courseId=1457904468778528769"},"other":"NA"}},"spanid":"7b4a7c240c7d68f9","trace_type":"response","parentspanid":"NA","route":-1,"pipe":-1,"response_time":27000000,"connect":{"protocol":"http:","srcip":"NA","dstport":-1,"srcport":-1,"dstip":"NA"},"who":{"from1":{"agent":"NA","page":{"appModule":"other","browser":"chrome","module":"mac","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (macintosh; intel mac os x 10_16_0) applewebkit/537.36 (khtml, like gecko) xx-desktop/1.5.1 chrome/85.0.4183.121 electron/10.2.0 safari/537.36","element":"NA"},"pageid":"/cm.html#/"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}},"timestamp":1636443840829,"policy":{"keywords":"NA","level":-1}},"pkid":"af3d911a-62ad-4f79-bf4d-b04817452eff","request_time":"0.000","request_length":"4182","s_timestamp":"1636443846398415","ds":"20211109","status":"200"}
+1636443851698
+{"trace":{"orgid":"NA","userid":"NA","who":{"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"},"from1":{"page":{"browser":"chrome","module":"mac","appModule":"other","domain":"localhost","pageid":"\\/cm.html#\\/","extras":{"userAgent":"mozilla\\/5.0 (macintosh; intel mac os x 10_16_0) applewebkit\\/537.36 (khtml, like gecko) xx-desktop\\/1.5.1 chrome\\/85.0.4183.121 electron\\/10.2.0 safari\\/537.36","element":"NA"}},"agent":"NA"}},"trace_type":"response","pipe":-1,"route":-1,"connect":{"protocol":"http:","srcport":-1,"srcip":"NA","dstip":"NA","dstport":-1},"traceid":"5...1636443840802.64549655","libversion":"5.20211105130000","content":{"result":{"retcode":200,"retinfo":"NA","retdata":"NA","retdatalength":49},"para":{"rest":{"body":"","url":"https:\\/\\/api-tcm-phx.yunxuetang.com.cn\\/v2\\/tcmCourse\\/getUpgradeLock","query_string":"courseId=1457904468778528769","header":"source=10105&TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6ImQ1OWU3MDJlLTE0YjgtNDJmMC1iYjcyLTY3NzQ4N2QwOTczMCIsInVzZXJJZCI6ImY1MmQ5ZmNhLTY2ZjItNDZhOS1iNWU2LTU4ZWY2YThmYjhlNCIsImNsdXN0ZXJJZCI6InYyZGV2IiwiZXhwIjoxNjM3NjUyMjA3fQ.-tpLEkOYM9qaCU_LWwapoSH2-9GPBIjXwtBwjEmX-CrBflRZN4er3m1abClj3P6MFy7WaphlhOBzdehUKpcp-w","method":"GET","bodylength":0},"other":"NA"}},"time_details":{"call_start":1636443840802,"dns_start":-1,"dns_end":-1,"connect_start":1636443840802,"secure_connect_start":-1,"secure_connect_end":-1,"connect_end":1636443840829,"connection_acquired":1636443840829,"request_headers_start":-1,"request_headers_end":-1,"request_body_start":-1,"request_body_end":-1,"response_headers_start":-1,"response_headers_end":-1,"response_body_start":-1,"response_body_end":-1,"connection_released":1636443840829,"call_end":-1},"timestamp":1636443840829,"spanid":"7b4a7c240c7d68f9","policy":{"level":-1,"keywords":"NA"},"parentspanid":"NA","response_time":27000000},"remote_addr":"172.31.0.50","request_time":"0.000","request_length":"4182","ds":"20211109","s_timestamp":"1636443851398415","pkid":"af3d911a-62ad-4f79-bf4d-b04817452eff","status":"200","time_iso8601":"2021-11-09T15:44:01+08:00"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='1908', ds='20211109', s_timestamp='1636443840156851', pkid='0bf8102a-4ff8-4664-89b4-55f96e5c5840', status='200', time_iso8601='2021-11-09T15:44:00+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@122e1fcb, who={"from1":{"agent":"NA","page":"NA"},"from2":{"svcid":"coreapi","filename":"OrgParSettingController.java","line":77},"to":{"svcid":"miscapi"}}, policy=null, trace_pype='null', pipe=-1, timestamp=1636443840136, spanid='af12554682ee2254', traceid='5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094', libversion='9.20211027173000', orgid='ac0a267c-044e-4a28-b489-6be16e0ab788', parentspanid='ef4185ec5d5db66a', userid='00f5760d-f921-424f-adaa-6a94b812baab', response_time=-1, route=-1, content=com.yxt.bigdata.trace.entity.Content@5cf4e9ee, time_details=null}}
+-----------------------1636443840156851
+current timestamp1636443840156	key:5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='1916', ds='20211109', s_timestamp='1636443840164322', pkid='837b6340-4db8-49ed-87aa-cccf27f25eae', status='200', time_iso8601='2021-11-09T15:44:00+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@58552e65, who={"from1":{"agent":"NA","page":"NA"},"from2":{"svcid":"coreapi","filename":"OrgParSettingController.java","line":77},"to":{"svcid":"miscapi"}}, policy=null, trace_pype='null', pipe=-1, timestamp=1636443840147, spanid='af12554682ee2254', traceid='5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094', libversion='9.20211027173000', orgid='ac0a267c-044e-4a28-b489-6be16e0ab788', parentspanid='ef4185ec5d5db66a', userid='00f5760d-f921-424f-adaa-6a94b812baab', response_time=11305704, route=-1, content=com.yxt.bigdata.trace.entity.Content@6eeab3a0, time_details=null}}
+-----------------------1636443840164322
+current timestamp1636443840164	key:5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='2406', ds='20211109', s_timestamp='1636443840259741', pkid='07faf01e-ade4-4f0e-9e58-ea0ad815d8aa', status='200', time_iso8601='2021-11-09T15:44:00+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@290a5966, who={"from1":{"agent":"NA","page":{"appModule":"other","module":"win","browser":"chrome","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/95.0.4638.69 safari/537.36","element":"NA"},"pageid":"/#/studynote"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@420fa7dd, trace_pype='null', pipe=-1, timestamp=1636443839402, spanid='ef4185ec5d5db66a', traceid='5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094', libversion='5.20211105130000', orgid='ac0a267c-044e-4a28-b489-6be16e0ab788', parentspanid='NA', userid='00f5760d-f921-424f-adaa-6a94b812baab', response_time=-1, route=-1, content=com.yxt.bigdata.trace.entity.Content@e7ff26c, time_details=com.yxt.bigdata.trace.entity.TimeDetails@7192a160}}
+-----------------------1636443840259741
+current timestamp1636443840259	key:5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='4229', ds='20211109', s_timestamp='1636443840711376', pkid='25e919ae-59f2-44fc-ba8e-bd58e12ebeca', status='200', time_iso8601='2021-11-09T15:44:00+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@29207fce, who={"from1":{"agent":"NA","page":{"appModule":"other","module":"win","domain":"localhost","browser":"chrome","extras":{"userAgent":"mozilla/5.0 (windows nt 10.0; wow64) applewebkit/537.36 (khtml, like gecko) chrome/95.0.4638.69 safari/537.36","element":"button fc-next-button fc-button fc-button-primary"},"pageid":"/#/teachmgmt"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@42801e7d, trace_pype='null', pipe=-1, timestamp=1636443840565, spanid='341703e898314f13', traceid='5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443840565.80555779', libversion='5.20211105130000', orgid='ac0a267c-044e-4a28-b489-6be16e0ab788', parentspanid='NA', userid='00f5760d-f921-424f-adaa-6a94b812baab', response_time=-1, route=-1, content=com.yxt.bigdata.trace.entity.Content@3fa9bf0c, time_details=com.yxt.bigdata.trace.entity.TimeDetails@7a379a47}}
+-----------------------1636443840711376
+current timestamp1636443840711	key:5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443840565.80555779
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='4229', ds='20211109', s_timestamp='1636443840711405', pkid='43832466-5189-4f0f-badd-c68db48693ca', status='200', time_iso8601='2021-11-09T15:44:00+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@2bf63c36, who={"from1":{"agent":"NA","page":{"appModule":"other","module":"win","domain":"localhost","browser":"chrome","extras":{"userAgent":"mozilla/5.0 (windows nt 10.0; wow64) applewebkit/537.36 (khtml, like gecko) chrome/95.0.4638.69 safari/537.36","element":"button fc-next-button fc-button fc-button-primary"},"pageid":"/#/teachmgmt"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@4f64ea6c, trace_pype='null', pipe=-1, timestamp=1636443840598, spanid='341703e898314f13', traceid='5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443840565.80555779', libversion='5.20211105130000', orgid='ac0a267c-044e-4a28-b489-6be16e0ab788', parentspanid='NA', userid='00f5760d-f921-424f-adaa-6a94b812baab', response_time=33000000, route=-1, content=com.yxt.bigdata.trace.entity.Content@5fe39750, time_details=com.yxt.bigdata.trace.entity.TimeDetails@33818c0f}}
+-----------------------1636443840711405
+current timestamp1636443840711	key:5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443840565.80555779
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='2472', ds='20211109', s_timestamp='1636443840616886', pkid='50c615a4-218a-44fb-bcca-4e24a4c0d1db', status='200', time_iso8601='2021-11-09T15:44:00+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@5ec0d80c, who={"from1":{"agent":"NA","page":{"appModule":"other","module":"win","browser":"chrome","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/95.0.4638.69 safari/537.36","element":"NA"},"pageid":"/#/studynote"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@10ebd29b, trace_pype='null', pipe=-1, timestamp=1636443839840, spanid='ef4185ec5d5db66a', traceid='5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094', libversion='5.20211105130000', orgid='ac0a267c-044e-4a28-b489-6be16e0ab788', parentspanid='NA', userid='00f5760d-f921-424f-adaa-6a94b812baab', response_time=438000000, route=-1, content=com.yxt.bigdata.trace.entity.Content@1e06af88, time_details=com.yxt.bigdata.trace.entity.TimeDetails@410d06a8}}
+-----------------------1636443840616886
+current timestamp1636443840616	key:5.ac0a267c-044e-4a28-b489-6be16e0ab788.00f5760d-f921-424f-adaa-6a94b812baab.1636443839402.42272094
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='2424', ds='20211109', s_timestamp='1636443841071884', pkid='60017a31-f24f-4ed2-bfbf-5f75bc9287f8', status='200', time_iso8601='2021-11-09T15:44:01+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@23bdafa0, who={"from1":{"agent":"NA","page":{"appModule":"other","module":"win","domain":"localhost","browser":"safari","extras":{"userAgent":"mozilla/5.0 (iphone; cpu iphone os 13_2_3 like mac os x) applewebkit/605.1.15 (khtml, like gecko) version/13.0.3 mobile/15e148 safari/604.1","element":"NA"},"pageid":"/#/publish/post"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@8b5bd30, trace_pype='null', pipe=-1, timestamp=1636443840963, spanid='6f058a2f3acad96b', traceid='4.ac0a267c-044e-4a28-b489-6be16e0ab788..1636443840963.45670843', libversion='4.20211105130000', orgid='ac0a267c-044e-4a28-b489-6be16e0ab788', parentspanid='NA', userid='NA', response_time=-1, route=-1, content=com.yxt.bigdata.trace.entity.Content@3bd626bf, time_details=com.yxt.bigdata.trace.entity.TimeDetails@2bc7eed8}}
+-----------------------1636443841071884
+current timestamp1636443841071	key:4.ac0a267c-044e-4a28-b489-6be16e0ab788..1636443840963.45670843
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='1670', ds='20211109', s_timestamp='1636443841229810', pkid='6675b495-f688-4c00-81ca-9473af2d58f7', status='200', time_iso8601='2021-11-09T15:44:01+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@3a428b07, who={"from1":{"agent":"NA","page":"NA"},"from2":{"svcid":"miscapi","filename":"OrgServiceImpl.java","line":53},"to":{"svcid":"udpapi"}}, policy=null, trace_pype='null', pipe=-1, timestamp=1636443841213, spanid='31e60fbbfad9bc4d', traceid='4...1636443840795.72727005', libversion='9.20211027173000', orgid='NA', parentspanid='6f57850a5c7f101b', userid='NA', response_time=11955192, route=-1, content=com.yxt.bigdata.trace.entity.Content@6f524e55, time_details=null}}
+-----------------------1636443841229810
+current timestamp1636443841229	key:4...1636443840795.72727005
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='4182', ds='20211109', s_timestamp='1636443841298415', pkid='af3d911a-62ad-4f79-bf4d-b04817452eff', status='200', time_iso8601='2021-11-09T15:44:01+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@6c9dfc08, who={"from1":{"agent":"NA","page":{"appModule":"other","browser":"chrome","module":"mac","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (macintosh; intel mac os x 10_16_0) applewebkit/537.36 (khtml, like gecko) xx-desktop/1.5.1 chrome/85.0.4183.121 electron/10.2.0 safari/537.36","element":"NA"},"pageid":"/cm.html#/"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@76ec0361, trace_pype='null', pipe=-1, timestamp=1636443840829, spanid='7b4a7c240c7d68f9', traceid='5...1636443840802.64549655', libversion='5.20211105130000', orgid='NA', parentspanid='NA', userid='NA', response_time=27000000, route=-1, content=com.yxt.bigdata.trace.entity.Content@c6a3ee, time_details=com.yxt.bigdata.trace.entity.TimeDetails@6476c342}}
+-----------------------1636443841298415
+current timestamp1636443841298	key:5...1636443840802.64549655
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='4182', ds='20211109', s_timestamp='1636443841398415', pkid='af3d911a-62ad-4f79-bf4d-b04817452eff', status='200', time_iso8601='2021-11-09T15:44:01+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@45c888ac, who={"from1":{"agent":"NA","page":{"appModule":"other","browser":"chrome","module":"mac","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (macintosh; intel mac os x 10_16_0) applewebkit/537.36 (khtml, like gecko) xx-desktop/1.5.1 chrome/85.0.4183.121 electron/10.2.0 safari/537.36","element":"NA"},"pageid":"/cm.html#/"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@aa6226f, trace_pype='null', pipe=-1, timestamp=1636443840829, spanid='7b4a7c240c7d68f9', traceid='5...1636443840802.64549655', libversion='5.20211105130000', orgid='NA', parentspanid='NA', userid='NA', response_time=27000000, route=-1, content=com.yxt.bigdata.trace.entity.Content@23c250a, time_details=com.yxt.bigdata.trace.entity.TimeDetails@bcd359}}
+-----------------------1636443841398415
+current timestamp1636443841398	key:5...1636443840802.64549655
+SingleMessage{remote_addr='172.31.0.50', request_time='0.000', request_length='4182', ds='20211109', s_timestamp='1636443851398415', pkid='af3d911a-62ad-4f79-bf4d-b04817452eff', status='200', time_iso8601='2021-11-09T15:44:01+08:00', trace=Trace{connect=com.yxt.bigdata.trace.entity.Connect@7d2b50, who={"from1":{"agent":"NA","page":{"appModule":"other","browser":"chrome","module":"mac","domain":"localhost","extras":{"userAgent":"mozilla/5.0 (macintosh; intel mac os x 10_16_0) applewebkit/537.36 (khtml, like gecko) xx-desktop/1.5.1 chrome/85.0.4183.121 electron/10.2.0 safari/537.36","element":"NA"},"pageid":"/cm.html#/"}},"from2":{"svcid":"NA","filename":"NA","line":-1},"to":{"svcid":"NA"}}, policy=com.yxt.bigdata.trace.entity.Policy@15ea0adc, trace_pype='null', pipe=-1, timestamp=1636443840829, spanid='7b4a7c240c7d68f9', traceid='5...1636443840802.64549655', libversion='5.20211105130000', orgid='NA', parentspanid='NA', userid='NA', response_time=27000000, route=-1, content=com.yxt.bigdata.trace.entity.Content@129fa5b4, time_details=com.yxt.bigdata.trace.entity.TimeDetails@1ae0390b}}
+-----------------------1636443851398415
+current timestamp1636443851398	key:5...1636443840802.64549655
+
+Process finished with exit code 130 (interrupted by signal 2: SIGINT)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
